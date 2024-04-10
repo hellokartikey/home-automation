@@ -1,5 +1,3 @@
-#! python3.7
-
 import argparse
 import os
 import numpy as np
@@ -32,6 +30,16 @@ def main():
                                  "Run this with 'list' to view available Microphones.", type=str)
     args = parser.parse_args()
 
+    # Call the infer_message function
+    transcription = infer_message(args)
+
+    # Print the transcription
+    print("\n\nTranscription:")
+    for line in transcription:
+        print(line)
+
+
+def infer_message(args):
     # The last time a recording was retrieved from the queue.
     phrase_time = None
     # Thread safe Queue for passing data from the threaded recording callback.
@@ -137,9 +145,7 @@ def main():
         except KeyboardInterrupt:
             break
 
-    print("\n\nTranscription:")
-    for line in transcription:
-        print(line)
+    return transcription
 
 
 if __name__ == "__main__":

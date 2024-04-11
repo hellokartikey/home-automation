@@ -1,10 +1,17 @@
 import speech_recognition as sr
 
-r = sr.Recognizer()
-mic = sr.Microphone()
+def recognize_speech():
+    r = sr.Recognizer()
+    mic = sr.Microphone()
 
-audio = None
-with mic as source:
-    audio = r.listen(source)
+    audio = None
+    with mic as source:
+        audio = r.listen(source)
 
-print(r.recognize_google(audio))
+    return r.recognize_google(audio)
+
+def infer(message: str) -> str:
+    return message
+
+result = infer(recognize_speech())
+print(result)

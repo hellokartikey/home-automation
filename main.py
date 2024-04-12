@@ -4,7 +4,7 @@ import pyaudio
 from model_backend import interface
 from web_backend.backend import *
 
-model = interface.Model("lmao")
+model = interface.Model()
 
 init_streamlit()
 

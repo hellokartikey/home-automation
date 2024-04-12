@@ -3,6 +3,7 @@ import pyaudio
 
 from model_backend import interface
 from web_backend.backend import *
+from speech_to_text import Audio
 
 model = interface.Model()
 
@@ -52,6 +53,8 @@ if st.button("Record Audio"):
         # This example just shows converting the list to bytes
         recorded_audio_bytes = b''.join(recorded_frames)
         st.success("Recording finished! You can now process the audio data.")
+
+        Audio.transcribe_audio(stream.read())
 
         # Speech to text function here
         # text = speech_to_text_function(recorded_audio_bytes)

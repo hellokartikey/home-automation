@@ -1,18 +1,18 @@
 import streamlit as st
 import pyaudio
 
-from model_backend import interface
+#from model_backend import interface
 from web_backend.backend import *
 from speech_to_text import Audio
 
-model = interface.Model()
+#model = interface.Model()
 
 init_streamlit()
 
 # Accept user input
 if prompt := st.chat_input("What is up?"):
     add_user_message(prompt)
-    add_model_message(model.infer(prompt))
+    add_model_message("Hello, console log")
 
 # Audio input functionality
 if st.button("Record Audio"):
@@ -22,7 +22,7 @@ if st.button("Record Audio"):
     chunk = 1024  # Record chunks of 1024 samples
     sample_format = pyaudio.paInt16  # 16 bits per sample
     channels = 1  # Mono audio
-    fs = 44100  # Sampling rate (44.1KHz)
+    fs = 16000  # Sampling rate (16KHz)
     seconds = 3  # Recording duration (seconds)
 
     try:
@@ -42,7 +42,7 @@ if st.button("Record Audio"):
             data = stream.read(chunk)
             recorded_frames.append(data)
 
-        # Stop and close the stream
+        # # Stop and close the stream
         stream.stop_stream()
         stream.close()
 
@@ -52,15 +52,16 @@ if st.button("Record Audio"):
         # Process the recorded audio (replace with your speech-to-text logic)
         # This example just shows converting the list to bytes
         recorded_audio_bytes = b''.join(recorded_frames)
+        #print(recorded_audio_bytes)
         st.success("Recording finished! You can now process the audio data.")
 
-        Audio.transcribe_audio(stream.read())
+        res = Audio.transcribe_audio(recorded_audio_bytes)
 
         # Speech to text function here
         # text = speech_to_text_function(recorded_audio_bytes)
         # st.write(f"Converted Text: hello")
         st.session_state.messages.append({"role": "user", "content": "test"})
         with st.chat_message("user"):
-            st.markdown("test")
+            st.write(res)
     except Exception as e:
         st.error(f"Error recording audio: {e}")

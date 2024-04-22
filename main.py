@@ -1,18 +1,18 @@
 import streamlit as st
 import pyaudio
 
-#from model_backend import interface
+from model_backend import interface
 from web_backend.backend import *
 from speech_to_text import Audio
 
-#model = interface.Model()
+model = interface.Model()
 
 init_streamlit()
 
 # Accept user input
 if prompt := st.chat_input("What is up?"):
     add_user_message(prompt)
-    add_model_message("Hello, console log")
+    add_model_message(model.infer(prompt))
 
 # Audio input functionality
 if st.button("Record Audio"):
